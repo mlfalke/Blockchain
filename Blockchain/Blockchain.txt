@@ -1,0 +1,18 @@
+{
+  "Chain": [
+    {
+      "Index": 0,
+      "TimeStamp": "2019-05-01T19:59:57.3951109+02:00",
+      "PreviousHash": null,
+      "Hash": "t4oCiPExGjT4Rqv3zU4raHTSewwLhgCVSfc8Pjm/15w=",
+      "Data": "{}"
+    },
+    {
+      "Index": 1,
+      "TimeStamp": "2019-05-01T19:59:57.4062927+02:00",
+      "PreviousHash": "t4oCiPExGjT4Rqv3zU4raHTSewwLhgCVSfc8Pjm/15w=",
+      "Hash": "/1tx7wmGGOYOybDXfdigT+yE5zNwU9klG4967Yfr1wU=",
+      "Data": "{sender:deze}"
+    }
+  ]
+}
