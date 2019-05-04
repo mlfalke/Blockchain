@@ -13,21 +13,22 @@ namespace Blockchain
         {
             
             Blockchain mafcoin = new Blockchain();
-            //FileStream filestreamCreate = new FileStream("Blockchain.txt", FileMode.OpenOrCreate);
+            FileStream filestreamCreate = new FileStream("Blockchain.txt", FileMode.OpenOrCreate);
 
-            mafcoin.AddBlock(new Block(DateTime.Now, null, "{sender:deze}"));
+            mafcoin.AddBlock(new Block(DateTime.Now,null,  "{sender:deze}"));
 
             Console.WriteLine(JsonConvert.SerializeObject(mafcoin, Formatting.Indented));
 
+            
 
-            // using(StreamWriter writer = new StreamWriter(filestreamCreate))
-            // {
+            using(StreamWriter writer = new StreamWriter(filestreamCreate))
+            {
                 
-            //     writer.Write(JsonConvert.SerializeObject(mafcoin, Formatting.Indented));
+                writer.Write(JsonConvert.SerializeObject(mafcoin, Formatting.Indented));
                 
-            // };
-
-
+            };
+            
+            
             Console.ReadKey();
         }
     }

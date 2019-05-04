@@ -11,15 +11,28 @@ namespace Blockchain
     public string PreviousHash { get; set; }  
     public string Hash { get; set; }  
     public string Data { get; set; }  
+    public string Ddata { get; set; }
   
     public Block(DateTime timeStamp, string previousHash, string data)  
     {  
+        //assymetric encryption method
+        //name of keycontainer
+        string KeyContainerName = "MyKeyContainer";
+        Key.RSAPersistKeyInCSP(KeyContainerName);
+        UnicodeEncoding ByteConverter = new UnicodeEncoding();
+        //encrypt string
+        byte[] Bdata = Encryption.RSAEncrypt(ByteConverter.GetBytes(data),KeyContainerName,false);
+        //decrypt bytes
+        byte[] Rdata = Encryption.RSADecrypt(Bdata,KeyContainerName,false);
+
         Index = 0;  
         TimeStamp = timeStamp;  
         PreviousHash = previousHash;  
-        Data = data;  
+        Data = ByteConverter.GetString(Rdata);
         Hash = CalculateHash();  
     }  
+
+    
   
     public string CalculateHash()  
     {  

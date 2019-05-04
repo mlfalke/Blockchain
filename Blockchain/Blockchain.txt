@@ -2,17 +2,19 @@
   "Chain": [
     {
       "Index": 0,
-      "TimeStamp": "2019-05-01T19:59:57.3951109+02:00",
+      "TimeStamp": "2019-05-04T00:05:41.3499726+02:00",
       "PreviousHash": null,
-      "Hash": "t4oCiPExGjT4Rqv3zU4raHTSewwLhgCVSfc8Pjm/15w=",
-      "Data": "{}"
+      "Hash": "EfnKsHS5UfgOzWnQq9NKs+yF5gP6M1Rv5+6qvmqy+Uw=",
+      "Data": "{}",
+      "Ddata": null
     },
     {
       "Index": 1,
-      "TimeStamp": "2019-05-01T19:59:57.4062927+02:00",
-      "PreviousHash": "t4oCiPExGjT4Rqv3zU4raHTSewwLhgCVSfc8Pjm/15w=",
-      "Hash": "/1tx7wmGGOYOybDXfdigT+yE5zNwU9klG4967Yfr1wU=",
-      "Data": "{sender:deze}"
+      "TimeStamp": "2019-05-04T00:05:41.3838521+02:00",
+      "PreviousHash": "EfnKsHS5UfgOzWnQq9NKs+yF5gP6M1Rv5+6qvmqy+Uw=",
+      "Hash": "+WQowT9o9sAt3H3UOMLx4NYQCpilwu6gxSdlLGTkYKs=",
+      "Data": "{sender:deze}",
+      "Ddata": null
     }
   ]
 }

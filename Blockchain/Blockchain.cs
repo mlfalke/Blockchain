@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using Newtonsoft.Json;
 
 namespace Blockchain
 {
@@ -15,25 +16,59 @@ namespace Blockchain
   
     public Blockchain()  
     {  
-        InitializeChain();  
+        
+        InitializeChain();
         AddGenesisBlock(); 
-        GetCurrentChain();
+        // GetCurrentChain();
         
     }  
 
-    public IList GetCurrentChain()
-    {
-        var fileReader = new System.IO.StreamReader("Blockchain.txt");
-        List<string> stringsFromFile = new List<string>();
-        string lineOfText;
-        while ((lineOfText = fileReader.ReadLine()) != null)
-        {
-            stringsFromFile.Add(lineOfText);
-        }
-        Console.WriteLine(stringsFromFile[4].Contains("TimeStamp"));
-        Console.WriteLine("done");
-        return stringsFromFile;
-    }
+    // public IList<Block> GetCurrentChain()
+    // {
+    //     //var dutu = @"Blockchain\Blockchain.txt";
+    //     //var fileReader = new System.IO.StreamReader("Blockchain.txt");
+    //     List<string> StringsFromFile = new List<string>();
+    //     //string lineOfText;
+    //     Chain = new List<Block>();
+    //     //JsonTextReader reader = new JsonTextReader(fileReader);
+    //     using (StreamReader file = File.OpenText("Blockchain.txt"))
+    //     {
+    //         var settings = new JsonSerializerSettings()
+    //         {
+    //             TypeNameHandling = TypeNameHandling.All
+    //         };
+    //         JsonSerializer serializer = new JsonSerializer();
+    //         Block block = (Block)serializer.Deserialize(file, typeof(Block),settings);
+    //         Chain.Add(block);
+    //         Console.WriteLine(JsonConvert.SerializeObject(block));
+    //     }
+
+    //     return Chain;
+        
+
+
+    //     // while ((lineOfText = fileReader.ReadLine()) != null)
+    //     // {
+    //     //     StringsFromFile.Add(lineOfText);
+    //     // }
+        
+        
+    //     // //JsonConvert.DeserializeObject<Block>(reader);
+
+        
+    //     // foreach (var line in StringsFromFile)
+    //     // {
+    	    
+    //     //     Console.WriteLine(line);
+    //     //     string[] entries = line.Split("Chain:[" + "]");
+            
+    //     //     List<Block> block = JsonConvert.DeserializeObject<List<Block>>(entries[2]);
+    //     //     //Console.WriteLine(block);
+    //     // }
+        
+        
+        
+    // }
   
   
     public void InitializeChain()  
@@ -54,7 +89,9 @@ namespace Blockchain
     public Block GetLatestBlock()  
     {  
         return Chain[Chain.Count - 1];  
-    }  
+    }
+
+
   
     public void AddBlock(Block block)  
     {  
