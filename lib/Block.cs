@@ -17,18 +17,22 @@ namespace Blockchain
     {  
         //assymetric encryption method
         //name of keycontainer
-        string KeyContainerName = "MyKeyContainer";
-        Key.RSAPersistKeyInCSP(KeyContainerName);
-        UnicodeEncoding ByteConverter = new UnicodeEncoding();
+        // string KeyContainerName = "MyKeyContainer";
+        // Key.RSAPersistKeyInCSP(KeyContainerName);
+        // UnicodeEncoding ByteConverter = new UnicodeEncoding();
         //encrypt string
-        byte[] Bdata = Encryption.RSAEncrypt(ByteConverter.GetBytes(data),KeyContainerName,false);
+        // byte[] Bdata = Encryption.RSAEncrypt(ByteConverter.GetBytes(data),KeyContainerName,false);
         //decrypt bytes
-        byte[] Rdata = Encryption.RSADecrypt(Bdata,KeyContainerName,false);
+        // byte[] Rdata = Encryption.RSADecrypt(Bdata,KeyContainerName,false);
+
+        string Sdata = RSACryptography.CryptographyHelper.Encrypt(data);
+        string Ddata= RSACryptography.CryptographyHelper.Decrypt(Sdata); 
+
 
         Index = 0;  
         TimeStamp = timeStamp;  
         PreviousHash = previousHash;  
-        Data = ByteConverter.GetString(Rdata);
+        Data = Ddata;
         Hash = CalculateHash();  
     }  
 

@@ -18,10 +18,11 @@ namespace Blockchain
     {  
         
         InitializeChain();
-        AddGenesisBlock(); 
+        
         // GetCurrentChain();
         
     }  
+    #region 
 
     // public IList<Block> GetCurrentChain()
     // {
@@ -69,11 +70,12 @@ namespace Blockchain
         
         
     // }
-  
+  #endregion
   
     public void InitializeChain()  
     {  
         Chain = new List<Block>();  
+        AddGenesisBlock(); 
     }  
   
     public Block CreateGenesisBlock()  
