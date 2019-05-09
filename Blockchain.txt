@@ -1,0 +1,20 @@
+{
+  "Chain": [
+    {
+      "Index": 0,
+      "TimeStamp": "2019-05-04T00:05:41.3499726+02:00",
+      "PreviousHash": null,
+      "Hash": "EfnKsHS5UfgOzWnQq9NKs+yF5gP6M1Rv5+6qvmqy+Uw=",
+      "Data": "{}",
+      "Ddata": null
+    },
+    {
+      "Index": 1,
+      "TimeStamp": "2019-05-04T00:05:41.3838521+02:00",
+      "PreviousHash": "EfnKsHS5UfgOzWnQq9NKs+yF5gP6M1Rv5+6qvmqy+Uw=",
+      "Hash": "+WQowT9o9sAt3H3UOMLx4NYQCpilwu6gxSdlLGTkYKs=",
+      "Data": "{sender:deze}",
+      "Ddata": null
+    }
+  ]
+}
