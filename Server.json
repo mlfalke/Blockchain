@@ -1,7 +1,7 @@
 { 
     "Port": 6000,
     "Ip": "127.0.0.1",
-    "Name": "Gemeente",
+    "Name": "ControleGroep",
     "Nodes": [
         {
             "Port": 6001,

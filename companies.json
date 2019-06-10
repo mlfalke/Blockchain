@@ -1,5 +1,23 @@
 [ 
     {
+        "name": "ControleGroep",
+        "publicKey": "",
+        "permissions": [
+            {"name": "antecedenten", "value": 1}, 
+            {"name": "aanhoudingen", "value": 1}, 
+            {"name": "heeftISDMaatregel", "value": 1},
+            {"name": "heeftOnderzoekRad", "value": 1},
+            {"name": "sepots",  "value": 1},
+            {"name": "lopendeDossiers",  "value": 1},
+            {"name": "heeftUitkering", "value": 1},
+            {"name": "meldingenRad", "value": 1},
+            {"name": "zitInGroepsAanpak", "value": 1},
+            {"name": "heeftIdBewijs", "value": 1},
+            {"name": "heeftLopendTraject", "value": 1},
+            {"name": "laatsteGesprek", "value": 1}
+        ]
+    },
+    {
         "name": "Politie",
         "publicKey": "",
         "permissions": [

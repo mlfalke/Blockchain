@@ -27,13 +27,12 @@ namespace Blockchain
 
             //;
             //Encryption.AddToMyStore(Encryption.Create("watdan", DateTime.Now, DateTime.MaxValue, "Hetwachtwoord"));
-            Blockchain GovernmentChain = new Blockchain();
             //FileStream filestreamCreate = new FileStream("Blockchain.txt", FileMode.OpenOrCreate);
              // The path to the certificate.
             //string Certificate =  @"0AE76E4CB07854E7CE19866BB97CE73246DFAA27.cer";
             
             Blockchain GovernmentChain = new Blockchain();
-            FileStream filestreamCreate = new FileStream("Blockchain.txt", FileMode.OpenOrCreate);
+            //FileStream filestreamCreate = new FileStream("Blockchain.txt", FileMode.OpenOrCreate);
             
             List<Company> companies = new List<Company>();
             using (StreamReader r = new StreamReader("companies.json"))
@@ -68,10 +67,10 @@ namespace Blockchain
             Console.WriteLine(JsonConvert.SerializeObject(GovernmentChain, Formatting.Indented));
 
 
-            using(StreamWriter writer = new StreamWriter(filestreamCreate))
-            {                
-                writer.Write(JsonConvert.SerializeObject(GovernmentChain, Formatting.Indented)); 
-            };
+            // using(StreamWriter writer = new StreamWriter(filestreamCreate))
+            // {                
+            //     writer.Write(JsonConvert.SerializeObject(GovernmentChain, Formatting.Indented)); 
+            // };
             
             Console.ReadKey();
         }

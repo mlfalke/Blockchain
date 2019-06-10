@@ -24,62 +24,62 @@ namespace Blockchain
         this.Hash = CalculateHash();
     }
 
-    public Block(DateTime timeStamp, Data newData, Person person)  
-    {  
-        // //assymetric encryption method
-        // //name of keycontainer
-        string KeyContainerName = "MyKeyContainer";
-        Key.RSAPersistKeyInCSP(KeyContainerName);
-        UnicodeEncoding ByteConverter = new UnicodeEncoding();
-        // //encrypt string
-        // byte[] Bdata = Encryption.RSAEncrypt(ByteConverter.GetBytes(data),KeyContainerName,false);
-        // //decrypt bytes
-        // byte[] Rdata = Encryption.RSADecrypt(Bdata,KeyContainerName,false);
+    // public Block(DateTime timeStamp, Data newData, Person person)  
+    // {  
+    //     // //assymetric encryption method
+    //     // //name of keycontainer
+    //     string KeyContainerName = "MyKeyContainer";
+    //     Key.RSAPersistKeyInCSP(KeyContainerName);
+    //     UnicodeEncoding ByteConverter = new UnicodeEncoding();
+    //     // //encrypt string
+    //     // byte[] Bdata = Encryption.RSAEncrypt(ByteConverter.GetBytes(data),KeyContainerName,false);
+    //     // //decrypt bytes
+    //     // byte[] Rdata = Encryption.RSADecrypt(Bdata,KeyContainerName,false);
 
-        // // string Sdata = RSACryptography.CryptographyHelper.Encrypt(data);
-        // // string Ddata= RSACryptography.CryptographyHelper.Decrypt(Sdata);
+    //     // // string Sdata = RSACryptography.CryptographyHelper.Encrypt(data);
+    //     // // string Ddata= RSACryptography.CryptographyHelper.Decrypt(Sdata);
 
-        //Get companyName by reading Server.json, which contains info over the running server(s)
-        string companyName = "";
-        using (StreamReader r = new StreamReader("../Server.json"))
-                {
-                    string serverJson = r.ReadToEnd();
-                    Server server = JsonConvert.DeserializeObject<Server>(serverJson);
-                    companyName = server.Name;
-                }
+    //     //Get companyName by reading Server.json, which contains info over the running server(s)
+    //     string companyName = "";
+    //     using (StreamReader r = new StreamReader("../Server.json"))
+    //             {
+    //                 string serverJson = r.ReadToEnd();
+    //                 Server server = JsonConvert.DeserializeObject<Server>(serverJson);
+    //                 companyName = server.Name;
+    //             }
 
-        //Define 'data' variable that will be ecnrypted later
-        string data = "{'value': "+newData.value+", 'person': {'surname': '"+person.surname+"', 'bsn': '"+person.bsn+"', 'birthDate': '"+person.birthDate.ToString()+"'}}";
-        //Change data to byte[] in order to encrypt it later
-        byte[] Bdata = ByteConverter.GetBytes(data);
-        string blockData = "{'type': '"+newData.type+"', 'sender': '"+companyName+"', 'value': [";
+    //     //Define 'data' variable that will be ecnrypted later
+    //     string data = "{'value': "+newData.value+", 'person': {'surname': '"+person.surname+"', 'bsn': '"+person.bsn+"', 'birthDate': '"+person.birthDate.ToString()+"'}}";
+    //     //Change data to byte[] in order to encrypt it later
+    //     byte[] Bdata = ByteConverter.GetBytes(data);
+    //     string blockData = "{'type': '"+newData.type+"', 'sender': '"+companyName+"', 'value': [";
 
-        //Get companies from companies.json, including their permissions
-        List<Company> companies = new List<Company>();
-        using (StreamReader r = new StreamReader("../companies.json"))
-                {
-                    string companiesJson = r.ReadToEnd();
-                    companies = JsonConvert.DeserializeObject<List<Company>>(companiesJson);
-                }
-        //Check if companies have permission to read the data. If so, encrypt the data with their keys and add it to JSON-formatted string blockData
-        foreach(Company c in companies){
-            foreach(Permission p in c.GetTruePermissions()){
-                if(p.name == newData.type){
-                    //TO DO: Add gathering of specific public key of the company (c) with "c.publicKey" and encrypt variable "data" with that key.
-                    blockData = blockData + "{'targetCompany': '"+c.name+"', 'Data': '"+Encryption.Encrypt(data)+"'},";
-                }
-            }
-        }
-        //Close and finish the blockData string so it is fully closed off
-        blockData = blockData.Substring(0,blockData.Length-1);
-        blockData = blockData + "]}";
+    //     //Get companies from companies.json, including their permissions
+    //     List<Company> companies = new List<Company>();
+    //     using (StreamReader r = new StreamReader("../companies.json"))
+    //             {
+    //                 string companiesJson = r.ReadToEnd();
+    //                 companies = JsonConvert.DeserializeObject<List<Company>>(companiesJson);
+    //             }
+    //     //Check if companies have permission to read the data. If so, encrypt the data with their keys and add it to JSON-formatted string blockData
+    //     foreach(Company c in companies){
+    //         foreach(Permission p in c.GetTruePermissions()){
+    //             if(p.name == newData.type){
+    //                 //TO DO: Add gathering of specific public key of the company (c) with "c.publicKey" and encrypt variable "data" with that key.
+    //                 blockData = blockData + "{'targetCompany': '"+c.name+"', 'Data': '"+Encryption.Encrypt(data)+"'},";
+    //             }
+    //         }
+    //     }
+    //     //Close and finish the blockData string so it is fully closed off
+    //     blockData = blockData.Substring(0,blockData.Length-1);
+    //     blockData = blockData + "]}";
 
-        this.Index = 0;  
-        this.TimeStamp = timeStamp;  
-        this.PreviousHash = "";  
-        this.Data = blockData;
-        this.Hash = CalculateHash();  
-    }
+    //     this.Index = 0;  
+    //     this.TimeStamp = timeStamp;  
+    //     this.PreviousHash = "";  
+    //     this.Data = blockData;
+    //     this.Hash = CalculateHash();  
+    // }
 
     public Block(DateTime timeStamp, Data newData, Person person, List<Company> companies, Company hostCompany)  
     {  
@@ -133,20 +133,20 @@ namespace Blockchain
   
         return Convert.ToBase64String(outputBytes);  
     } 
-    public string FUCKDEZECODE(string data)
-    {
+    // public string FUCKDEZECODE(string data)
+    // {
 
-        string Private = "private_key.pem";
-        string Public = "public_key.pem";
+    //     string Private = "private_key.pem";
+    //     string Public = "public_key.pem";
         
-        UnicodeEncoding ByteConverter = new UnicodeEncoding();
-        var ndata = ByteConverter.GetBytes(data);
-        string output = string.Empty;
-        X509Certificate2 cert = Encryption.Create("watdan", DateTime.Now, DateTime.MaxValue, "Hetwachtwoord");
-        using (RSA rsa = cert.GetRSAPublicKey())
-        {
-            return Convert.ToBase64String(rsa.Encrypt(ndata, RSAEncryptionPadding.OaepSHA1));
-        }
+    //     UnicodeEncoding ByteConverter = new UnicodeEncoding();
+    //     var ndata = ByteConverter.GetBytes(data);
+    //     string output = string.Empty;
+    //     X509Certificate2 cert = Encryption.Create("watdan", DateTime.Now, DateTime.MaxValue, "Hetwachtwoord");
+    //     using (RSA rsa = cert.GetRSAPublicKey())
+    //     {
+    //         return Convert.ToBase64String(rsa.Encrypt(ndata, RSAEncryptionPadding.OaepSHA1));
+    //     }
 
        
 
@@ -155,8 +155,8 @@ namespace Blockchain
         // var RData = Encryption.RSADecrypt(Sdata,"key",false);
 
         
-    }
+    // }
 
-}
+    }
 
 }
