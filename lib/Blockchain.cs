@@ -80,7 +80,7 @@ namespace Blockchain
   
     public Block CreateGenesisBlock()  
     {  
-        return new Block( DateTime.Now, null, "{}");  
+        return new Block( DateTime.Now );  
     }  
   
     public void AddGenesisBlock()  
