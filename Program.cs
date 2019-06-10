@@ -2,15 +2,35 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Security.Cryptography;
+using System.Security.Cryptography.X509Certificates;
+
+using System.Security.Permissions;
 using System.Text;
 using Newtonsoft.Json;
+
+
+
+
 
 namespace Blockchain
 {
     class Program
     {
+
+        
+
         static void Main(string[] args)
         {
+            string Private = @"private_key.pem";
+            string Public = @"public_key.pem";
+            Key.GenerateRsaKeyPair(Private, Public);
+
+            //;
+            //Encryption.AddToMyStore(Encryption.Create("watdan", DateTime.Now, DateTime.MaxValue, "Hetwachtwoord"));
+            Blockchain GovernmentChain = new Blockchain();
+            //FileStream filestreamCreate = new FileStream("Blockchain.txt", FileMode.OpenOrCreate);
+             // The path to the certificate.
+            //string Certificate =  @"0AE76E4CB07854E7CE19866BB97CE73246DFAA27.cer";
             
             Blockchain GovernmentChain = new Blockchain();
             FileStream filestreamCreate = new FileStream("Blockchain.txt", FileMode.OpenOrCreate);

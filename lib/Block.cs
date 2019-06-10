@@ -1,5 +1,6 @@
 using System;
 using System.Security.Cryptography;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Collections.Generic;
 using System.IO;
@@ -131,6 +132,31 @@ namespace Blockchain
         byte[] outputBytes = sha256.ComputeHash(inputBytes);  
   
         return Convert.ToBase64String(outputBytes);  
-    }  
+    } 
+    public string FUCKDEZECODE(string data)
+    {
+
+        string Private = "private_key.pem";
+        string Public = "public_key.pem";
+        
+        UnicodeEncoding ByteConverter = new UnicodeEncoding();
+        var ndata = ByteConverter.GetBytes(data);
+        string output = string.Empty;
+        X509Certificate2 cert = Encryption.Create("watdan", DateTime.Now, DateTime.MaxValue, "Hetwachtwoord");
+        using (RSA rsa = cert.GetRSAPublicKey())
+        {
+            return Convert.ToBase64String(rsa.Encrypt(ndata, RSAEncryptionPadding.OaepSHA1));
+        }
+
+       
+
+
+        // var Sdata = Encryption.RSAEncrypt(ByteConverter.GetBytes(data),"key",false);
+        // var RData = Encryption.RSADecrypt(Sdata,"key",false);
+
+        
+    }
+
 }
+
 }

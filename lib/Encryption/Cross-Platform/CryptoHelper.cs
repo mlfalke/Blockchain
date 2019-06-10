@@ -1,6 +1,7 @@
 using System; 
 using System.Security.Cryptography;
 using System.Text;
+
 namespace RSACryptography{
     public static class CryptographyHelper{
         private static bool _optimalAsymmetricEncryptionPadding = false;

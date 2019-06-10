@@ -18,6 +18,7 @@ namespace Blockchain
     {  
         
         InitializeChain();
+        CreateGenesisBlock();
         
         // GetCurrentChain();
         
