@@ -1,0 +1,27 @@
+{ 
+    "Port": 6000,
+    "Ip": "127.0.0.1",
+    "Name": "Gemeente",
+    "Nodes": [
+        {
+            "Port": 6001,
+            "Ip": "127.0.0.1",
+            "Name": "Politie"
+        },
+        {
+            "Port": 6002,
+            "Ip": "127.0.0.1",
+            "Name": "OM"
+        },
+        {
+            "Port": 6003,
+            "Ip": "127.0.0.1",
+            "Name": "Reclassering"
+        },
+        {
+            "Port": 6004,
+            "Ip": "127.0.0.1",
+            "Name": "Gemeente"
+        }
+    ]
+}
