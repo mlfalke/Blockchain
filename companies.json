@@ -1,0 +1,74 @@
+[ 
+    {
+        "name": "Politie",
+        "publicKey": "",
+        "permissions": [
+            {"name": "antecedenten", "value": 1}, 
+            {"name": "aanhoudingen", "value": 1}, 
+            {"name": "heeftISDMaatregel", "value": 1},
+            {"name": "heeftOnderzoekRad", "value": 0},
+            {"name": "sepots",  "value": 0},
+            {"name": "lopendeDossiers",  "value": 0},
+            {"name": "heeftUitkering", "value": 0},
+            {"name": "meldingenRad", "value": 0},
+            {"name": "zitInGroepsAanpak", "value": 0},
+            {"name": "heeftIdBewijs", "value": 0},
+            {"name": "heeftLopendTraject", "value": 0},
+            {"name": "laatsteGesprek", "value": 0}
+        ]
+    },
+    {
+        "name": "OM",
+        "publicKey": "",
+        "permissions": [
+            {"name": "antecedenten", "value": 1}, 
+            {"name": "aanhoudingen", "value": 0}, 
+            {"name": "heeftISDMaatregel", "value": 0},
+            {"name": "heeftOnderzoekRad", "value": 1},
+            {"name": "sepots",  "value": 1},
+            {"name": "lopendeDossiers",  "value": 1},
+            {"name": "heeftUitkering", "value": 0},
+            {"name": "meldingenRad", "value": 0},
+            {"name": "zitInGroepsAanpak", "value": 0},
+            {"name": "heeftIdBewijs", "value": 0},
+            {"name": "heeftLopendTraject", "value": 0},
+            {"name": "laatsteGesprek", "value": 0}
+        ]
+    },
+    {
+        "name": "Gemeente",
+        "publicKey": "",
+        "permissions": [
+            {"name": "antecedenten", "value": 0}, 
+            {"name": "aanhoudingen", "value": 0}, 
+            {"name": "heeftISDMaatregel", "value": 0},
+            {"name": "heeftOnderzoekRad", "value": 0},
+            {"name": "sepots",  "value": 0},
+            {"name": "lopendeDossiers",  "value": 0},
+            {"name": "heeftUitkering", "value": 1},
+            {"name": "meldingenRad", "value": 1},
+            {"name": "zitInGroepsAanpak", "value": 1},
+            {"name": "heeftIdBewijs", "value": 1},
+            {"name": "heeftLopendTraject", "value": 0},
+            {"name": "laatsteGesprek", "value": 0}
+        ]
+    },
+    {
+        "name": "Reclassering",
+        "publicKey": "",
+        "permissions": [
+            {"name": "antecedenten", "value": 0}, 
+            {"name": "aanhoudingen", "value": 0}, 
+            {"name": "heeftISDMaatregel", "value": 0},
+            {"name": "heeftOnderzoekRad", "value": 0},
+            {"name": "sepots",  "value": 0},
+            {"name": "lopendeDossiers",  "value": 0},
+            {"name": "heeftUitkering", "value": 0},
+            {"name": "meldingenRad", "value": 0},
+            {"name": "zitInGroepsAanpak", "value": 0},
+            {"name": "heeftIdBewijs", "value": 0},
+            {"name": "heeftLopendTraject", "value": 1},
+            {"name": "laatsteGesprek", "value": 1}
+        ]
+    }
+]
