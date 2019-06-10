@@ -2,19 +2,17 @@
   "Chain": [
     {
       "Index": 0,
-      "TimeStamp": "2019-05-04T00:05:41.3499726+02:00",
-      "PreviousHash": null,
-      "Hash": "EfnKsHS5UfgOzWnQq9NKs+yF5gP6M1Rv5+6qvmqy+Uw=",
-      "Data": "{}",
-      "Ddata": null
+      "TimeStamp": "2019-06-10T12:38:38.0511466+02:00",
+      "PreviousHash": "",
+      "Hash": "zF4dMk5Uxco8dE+mzcrP7cqiUDSHiSYrTTpLgpkWbmQ=",
+      "Data": "{}"
     },
     {
       "Index": 1,
-      "TimeStamp": "2019-05-04T00:05:41.3838521+02:00",
-      "PreviousHash": "EfnKsHS5UfgOzWnQq9NKs+yF5gP6M1Rv5+6qvmqy+Uw=",
-      "Hash": "+WQowT9o9sAt3H3UOMLx4NYQCpilwu6gxSdlLGTkYKs=",
-      "Data": "{sender:deze}",
-      "Ddata": null
+      "TimeStamp": "2019-06-10T12:38:39.2312003+02:00",
+      "PreviousHash": "zF4dMk5Uxco8dE+mzcrP7cqiUDSHiSYrTTpLgpkWbmQ=",
+      "Hash": "t/uHDXfI30+SY6WLFk/QYAI/JXYrqqCNtvCElz4mdI0=",
+      "Data": "{'type': 'antecedenten', 'sender': 'Gemeente', 'value': [{'targetCompany': 'Politie', 'Data': 'tBdf2pkdwvsHthQ6XV4/mE8Y3H92HC6B3PVNKItDBc32lt2wwSNqqLhys5j+ndSgGb1/dH1HG3ZoA8WQj4q44XnEm7pHkRIhZ2kyekCm7uyqDbBfEIhQ8oMGgvHaoePjC9bTiNoq1C+caxO5iEx0TzhiZj9bqcXgFWfGkTGiTzc='},{'targetCompany': 'OM', 'Data': '6LNu6kszGjktsBEJXUQiDYNw8IbYgp8Ria+1fZuRq5nQMuj5Oo7VdMh88U8KN2kk/fCs/eTwNNP4lwPuixbuXbkGAvGVXadTamZsBmsI9qxgw0x8IErmR7yF3yGtRChQH2BwVgBC33FwGAyQ1cu6vpgvLOnMLPPKdY5UCoy/o+c='}]}"
     }
   ]
 }
