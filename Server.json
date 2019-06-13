@@ -1,17 +1,17 @@
 {
-    "Port":6002,
-    "Ip":"127.0.0.1",
-    "Name":"Niet Politie",
-    "Nodes":[
-        {
-            "Port":6000,
-            "Ip":"127.0.0.1",
-            "Name":"Other"
-        },
-        {
-            "Port":6001,
-            "Ip":"127.0.0.1",
-            "Name":"Politie"
-        }
-    ]
+  "Port": 6002,
+  "Ip": "145.137.25.170",
+  "Name": "Niet Politie",
+  "Nodes": [
+    {
+      "Port": 5000,
+      "Ip": "145.137.25.170",
+      "Name": "Other"
+    },
+    {
+      "Port": 6001,
+      "Ip": "127.0.0.1",
+      "Name": "Politie"
+    }
+  ]
 }
