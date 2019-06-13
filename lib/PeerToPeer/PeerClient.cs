@@ -33,19 +33,16 @@ namespace Blockchain{
                         }
                     }
                 };
-                try
-                {
                     ws.Connect();
-                    ws.Send("Hi Server");
-                    ws.Send(JsonConvert.SerializeObject(Program.GovernmentChain));
-                }
-                catch (System.Exception Error)
-                {
-                    Console.WriteLine(Error);
-                    return false;
-                }
-                wsDict.Add(url, ws);
-                return true;
+                    if(ws.IsAlive){
+                        ws.Send("Hi Server");
+                        ws.Send(JsonConvert.SerializeObject(Program.GovernmentChain));
+                        wsDict.Add(url, ws);
+                        return true;
+                    }else{
+                        return false;
+                    }
+                   
             }
             return true;
         }

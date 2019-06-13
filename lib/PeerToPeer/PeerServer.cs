@@ -16,7 +16,7 @@ namespace Blockchain
 
         public void Start()
         {
-            wss = new WebSocketServer($"wss://{Program.IpV4Address}:{Program.Port}");
+            wss = new WebSocketServer($"ws://{Program.IpV4Address}:{Program.Port}");
             // ws = new WebSocketServer(Program.Port);
             wss.AddWebSocketService<P2PServer>("/Blockchain");
             wss.Start();

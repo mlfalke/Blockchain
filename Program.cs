@@ -82,9 +82,11 @@ namespace Blockchain
             {
                 tryConnect = false;
                 // Create a timer with a two second interval.
-                aTimer = new System.Timers.Timer(40000);
+                aTimer = new System.Timers.Timer();
                 // Hook up the Elapsed event for the timer. 
                 aTimer.Elapsed += OnTimedEvent;
+                aTimer.AutoReset = false;
+                aTimer.Interval = 1000;
                 aTimer.Enabled = true;
             }
         }
@@ -92,7 +94,6 @@ namespace Blockchain
         {
             Console.WriteLine("The Elapsed event was raised at {0:HH:mm:ss.fff}",
                             e.SignalTime);
-            aTimer.Dispose();
             ConnectServers();
         }
     }
