@@ -71,6 +71,52 @@ namespace Blockchain
             // {                
             //     writer.Write(JsonConvert.SerializeObject(GovernmentChain, Formatting.Indented)); 
             // };
+
+
+
+
+            var data = "{sender:alskfdjlksdafjlksadjdeze}";
+            UnicodeEncoding ByteConverter = new UnicodeEncoding();
+            var ndata = ByteConverter.GetBytes(data);
+            var password = "Hetwachtwoord";
+            var collection = new X509Certificate2Collection();
+            string pet = @"6FE9A3444993E4EB9D449D532FD7B4CDFD19B4BC.pfx";
+            collection.Import(pet,password, X509KeyStorageFlags.PersistKeySet);
+            var certificate = collection[0];
+            if (!certificate.HasPrivateKey)
+            throw new Exception("The certificate does not have a private key");
+            //var encryptedData = publickey.Encrypt(ndata, false);
+            
+            //var decrypt = publickey.Decrypt(encryptedData,false);
+
+            //Console.WriteLine(encryptedData);
+            //Console.WriteLine(decrypt);
+            
+            GovernmentChain.AddBlock(new Block(DateTime.Now,null,data));
+            Console.WriteLine(JsonConvert.SerializeObject(GovernmentChain, Formatting.Indented));
+            //string fileName =  @"397B767444CA06357BE84C8F0D914C3C9A64C4EF.cer";
+           using (RSA rsa = certificate.GetRSAPrivateKey())
+            {
+                if (rsa == null)
+                {
+                    throw new Exception("Wasn't an RSA key, or no private key was present");
+                }
+
+                var dit = rsa.Encrypt(ndata, RSAEncryptionPadding.Pkcs1);
+               
+                Console.WriteLine( Convert.ToBase64String(dit));
+                    // bool isValid = rsa.VerifyData(
+                    // Encoding.UTF8.GetBytes(plainText),
+                    // signature,
+                    // HashAlgorithmName.SHA256,
+                    // RSASignaturePadding.Pkcs1);
+                using (RSA prsa = certificate.GetRSAPrivateKey())
+                {
+                    var dat = prsa.Decrypt(dit, RSAEncryptionPadding.Pkcs1);
+                    Console.WriteLine(ByteConverter.GetString(dat));
+                }
+               
+            }
             
             Console.ReadKey();
         }
