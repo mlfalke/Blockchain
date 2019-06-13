@@ -8,31 +8,17 @@ using System.Security.Permissions;
 using System.Text;
 using Newtonsoft.Json;
 
-
-
-
-
 namespace Blockchain
 {
     class Program
     {
-
-        
-
         static void Main(string[] args)
         {
             string Private = @"private_key.pem";
             string Public = @"public_key.pem";
             Key.GenerateRsaKeyPair(Private, Public);
 
-            //;
-            //Encryption.AddToMyStore(Encryption.Create("watdan", DateTime.Now, DateTime.MaxValue, "Hetwachtwoord"));
-            //FileStream filestreamCreate = new FileStream("Blockchain.txt", FileMode.OpenOrCreate);
-             // The path to the certificate.
-            //string Certificate =  @"0AE76E4CB07854E7CE19866BB97CE73246DFAA27.cer";
-            
             Blockchain GovernmentChain = new Blockchain();
-            //FileStream filestreamCreate = new FileStream("Blockchain.txt", FileMode.OpenOrCreate);
             
             List<Company> companies = new List<Company>();
             using (StreamReader r = new StreamReader("companies.json"))
@@ -48,6 +34,7 @@ namespace Blockchain
                     string serverJson = r.ReadToEnd();
                     server = JsonConvert.DeserializeObject<Server>(serverJson);
                 }
+
             //Search in lists of companies for host name to get hostCompany
             Company hostCompany = new Company();
             foreach( Company c in companies){
@@ -63,16 +50,36 @@ namespace Blockchain
             string newDataValue = "1";
             Data newData = new Data(newDataType, newDataValue);
 
-            GovernmentChain.AddBlock(new Block(DateTime.Now, newData, subject, companies, hostCompany));
-            Console.WriteLine(JsonConvert.SerializeObject(GovernmentChain, Formatting.Indented));
+            // Opzet voor tests.
+            string blocktest = "";
+            string hashtest = "";
 
+            Block testblock;
+            testblock = new Block(DateTime.Now, newData, subject, companies, hostCompany);
+            // #####################
 
-            // using(StreamWriter writer = new StreamWriter(filestreamCreate))
-            // {                
-            //     writer.Write(JsonConvert.SerializeObject(GovernmentChain, Formatting.Indented)); 
-            // };
-            
-            Console.ReadKey();
+            // Unit test blocks
+            blocktest = JsonConvert.SerializeObject(GovernmentChain.GetLatestBlock(), Formatting.Indented);
+            Console.WriteLine("Block test:" + Environment.NewLine + blocktest + Environment.NewLine);
+            // #####################
+
+            // Integration test adding blocks to the chain
+            Console.WriteLine("Before adding block:" + Environment.NewLine + JsonConvert.SerializeObject(GovernmentChain, Formatting.Indented) + Environment.NewLine);
+            GovernmentChain.AddBlock(testblock);
+            Console.WriteLine("After adding block:" + Environment.NewLine + JsonConvert.SerializeObject(GovernmentChain, Formatting.Indented) + Environment.NewLine);
+
+            // Test op validiteit
+            Console.WriteLine("Validiteit test:" + Environment.NewLine + GovernmentChain.IsValid() + Environment.NewLine);
+            // #####################
+
+            // Unit test encryption
+            hashtest = testblock.CalculateHash();
+            Console.WriteLine("Hash test:" + Environment.NewLine + hashtest + Environment.NewLine);
+            // #####################
+
+            // Test op validiteit
+            Console.WriteLine("Validiteit test:" + Environment.NewLine + GovernmentChain.IsValid() + Environment.NewLine);
+            // #####################
         }
     }
 
