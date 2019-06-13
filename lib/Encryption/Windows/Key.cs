@@ -1,140 +1,171 @@
-using System;
-using System.Diagnostics;
-using System.IO;
-using System.Security.Cryptography;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
-using Org.BouncyCastle;
 using Org.BouncyCastle.Asn1.Pkcs;
 using Org.BouncyCastle.Asn1.X509;
 using Org.BouncyCastle.Crypto;
 using Org.BouncyCastle.Crypto.Generators;
+using Org.BouncyCastle.Crypto.Parameters;
+using Org.BouncyCastle.Math;
 using Org.BouncyCastle.OpenSsl;
 using Org.BouncyCastle.Pkcs;
 using Org.BouncyCastle.Security;
+using Org.BouncyCastle.X509;
+using X509Certificate = Org.BouncyCastle.X509.X509Certificate;
+using Org.BouncyCastle.Crypto.Prng;
+using Org.BouncyCastle.Crypto.Operators;
+using System.IO;
+using System;
 
 namespace Blockchain
 {
     public class Key
     {
         //windows manier van opslaan RSA keys
-        public static void RSAPersistKeyInCSP(string ContainerName)
-    {
-        try
+            #region Methods X509Certificate2 Create
+
+        /// <summary>
+        /// Adds a certificate to My store for the LocalMachine
+        /// </summary>
+        public static void AddToMyStore(X509Certificate2 certificate2)
         {
-            // Create a new instance of CspParameters.  Pass
-            // 13 to specify a DSA container or 1 to specify
-            // an RSA container.  The default is 1.
-            CspParameters cspParams = new CspParameters();
-
-            // Specify the container name using the passed variable.
-            cspParams.KeyContainerName = ContainerName;
-
-            FileStream filestreamCreate = new FileStream("Blockchain.txt", FileMode.OpenOrCreate);
-
-            //Create a new instance of RSACryptoServiceProvider to generate
-            //a new key pair.  Pass the CspParameters class to persist the 
-            //key in the container.
-            RSACryptoServiceProvider RSAalg = new RSACryptoServiceProvider(cspParams);
-            //Indicate that the key was persisted.
-            Console.WriteLine("The RSA key was persisted in the container, \"{0}\".", ContainerName);
+            X509Store store = ReturnStore();
+            store.Add(certificate2);
+            store.Close();
         }
-        catch(CryptographicException e)
+
+        /// <summary>
+        /// Static method used to create a certificate and return as a .net object
+        /// </summary>
+        
+        public static X509Certificate2 Create(string name, DateTime start, DateTime end, string userPassword, bool addtoStore = false, string exportDirectory = @"lib\Encryption\Certificates")
         {
-            Console.WriteLine(e.Message);
+            // generate a key pair using RSA
+            var generator = new RsaKeyPairGenerator();
+            // keys have to be a minimum of 2048 bits for Azure
+            generator.Init(new KeyGenerationParameters(new SecureRandom(new CryptoApiRandomGenerator()), 2048));
+            AsymmetricCipherKeyPair cerKp = generator.GenerateKeyPair();
+            // get a copy of the private key
+            AsymmetricKeyParameter privateKey = cerKp.Private;
 
+
+            // create the CN using the name passed in and create a unique serial number for the cert
+            var certName = new X509Name("CN=" + name);
+            BigInteger serialNo = BigInteger.ProbablePrime(120, new Random());
+
+            // start the generator and set CN/DN and serial number and valid period
+            var x509Generator = new X509V3CertificateGenerator();
+            x509Generator.SetSerialNumber(serialNo);
+            x509Generator.SetSubjectDN(certName);
+            x509Generator.SetIssuerDN(certName);
+            x509Generator.SetNotBefore(start);
+            x509Generator.SetNotAfter(end);
+            // add the server authentication key usage
+            var keyUsage = new KeyUsage(KeyUsage.KeyEncipherment);
+            x509Generator.AddExtension(X509Extensions.KeyUsage, false, keyUsage.ToAsn1Object());
+            var extendedKeyUsage = new ExtendedKeyUsage(new[] {KeyPurposeID.IdKPServerAuth});
+            x509Generator.AddExtension(X509Extensions.ExtendedKeyUsage, true, extendedKeyUsage.ToAsn1Object());
+            // algorithm can only be SHA1 ??
+
+
+            ISignatureFactory signatureFactory = new Asn1SignatureFactory("SHA256WITHRSA", cerKp.Private);
+            // Set the key pair
+            x509Generator.SetPublicKey(cerKp.Public);
+            X509Certificate certificate = x509Generator.Generate(signatureFactory);
+            
+
+            // export the certificate bytes
+            byte[] certStream = DotNetUtilities.ToX509Certificate(certificate).Export(X509ContentType.Pkcs12, userPassword);
+
+            // build the key parameter and the certificate entry
+            var keyEntry = new AsymmetricKeyEntry(privateKey);
+            var entry = new X509CertificateEntry(certificate);
+            // build the PKCS#12 store to encapsulate the certificate
+            var builder = new Pkcs12StoreBuilder();
+            builder.SetUseDerEncoding(true);
+            builder.SetCertAlgorithm(PkcsObjectIdentifiers.Sha256WithRsaEncryption);
+            builder.SetKeyAlgorithm(PkcsObjectIdentifiers.Sha256WithRsaEncryption);
+            builder.Build();
+            // create a memorystream to hold the output
+            var stream = new MemoryStream(10000);
+            // create the individual store and set two entries for cert and key
+            var store = new Pkcs12Store();
+            store.SetCertificateEntry("Created by Blockchain", entry);
+            store.SetKeyEntry("Created by Blockchain", keyEntry, new[] { entry });
+            store.Save(stream, userPassword.ToCharArray(), new SecureRandom());
+
+             // Create the equivalent C# representation
+            var cert = new X509Certificate2(stream.GetBuffer(), userPassword, X509KeyStorageFlags.Exportable);
+            // set up the PEM writer too
+            if (exportDirectory != null)
+            {
+                var textWriter = new StringWriter();
+                var pemWriter = new PemWriter(textWriter);
+                pemWriter.WriteObject(cerKp.Private, "DESEDE", userPassword.ToCharArray(), new SecureRandom());
+                
+                pemWriter.Writer.Flush();
+                string privateKeyPem = textWriter.ToString();
+                using (var writer = new StreamWriter(Path.Combine(exportDirectory, cert.Thumbprint + ".pem")))
+                    {
+                        writer.WriteLine(privateKeyPem);
+                    }
+                // also export the certs - first the .pfx
+                byte[] privateKeyBytes = cert.Export(X509ContentType.Pfx, userPassword);
+                using (var writer = new FileStream(Path.Combine(exportDirectory, cert.Thumbprint + ".pfx"), FileMode.OpenOrCreate, FileAccess.Write))
+                {
+                    writer.Write(privateKeyBytes, 0, privateKeyBytes.Length);
+                }
+                // also export the certs - then the .cer
+                byte[] publicKeyBytes = cert.Export(X509ContentType.Cert);
+                using (var writer = new FileStream(Path.Combine(exportDirectory, cert.Thumbprint + ".cer"), FileMode.OpenOrCreate, FileAccess.Write))
+                {
+                    writer.Write(publicKeyBytes, 0, publicKeyBytes.Length);
+                }
+
+            }
+
+            // if specified then this add this certificate to the store
+            if (addtoStore)
+                AddToMyStore(cert);
+
+            return cert;
         }
+
+        /// <summary>
+        /// Checks to see whether the certificate is in the appropriate store
+        /// </summary>
+        public static bool IsInMyStore(X509Certificate2 certificate2)
+        {
+            X509Store store = ReturnStore();
+            X509Certificate2Collection certCollection = store.Certificates.Find(X509FindType.FindByThumbprint,
+                                                                                certificate2.Thumbprint, false);
+            return certCollection.Count > 0;
+        }
+
+        /// <summary>
+        /// Removes a certificate from My LocalMachine Store
+        /// </summary>
+        public static void RemoveFromMyStore(X509Certificate2 certificate2)
+        {
+            X509Store store = ReturnStore();
+            store.Remove(certificate2);
+            store.Close();
+        }
+
+        /// <summary>
+        /// Returns the My LocalMachine store
+        /// </summary>
+        /// <returns></returns>
+        private static X509Store ReturnStore()
+        {
+            var store = new X509Store(StoreName.My, StoreLocation.LocalMachine);
+            store.Open(OpenFlags.OpenExistingOnly | OpenFlags.ReadWrite);
+            return store;
+        }
+
+        #endregion Methods
     }
 
-    //windows manier van RSA key verwijderen
-    public static void RSADeleteKeyInCSP(string ContainerName)
-    {
-        try
-        {
-            // Create a new instance of CspParameters.  Pass
-            // 13 to specify a DSA container or 1 to specify
-            // an RSA container.  The default is 1.
-            CspParameters cspParams = new CspParameters();
-
-            // Specify the container name using the passed variable.
-            cspParams.KeyContainerName = ContainerName;
-
-            //Create a new instance of RSACryptoServiceProvider. 
-            //Pass the CspParameters class to use the 
-            //key in the container.
-            RSACryptoServiceProvider RSAalg = new RSACryptoServiceProvider(cspParams);
-
-            //Delete the key entry in the container.
-            RSAalg.PersistKeyInCsp = false;
-
-            //Call Clear to release resources and delete the key from the container.
-            RSAalg.Clear();
-
-            //Indicate that the key was persisted.
-            Console.WriteLine("The RSA key was deleted from the container, \"{0}\".", ContainerName);
-        }
-        catch(CryptographicException e)
-        {
-            Console.WriteLine(e.Message);
-
-        }
-    }
-
-    //maakt een public of private key aan
-    public static void GenerateRsaKeyPair(String privateKeyFilePath, String publicKeyFilePath)  
-{  
-    X509Name name = new X509Name("CN=Client Cert, C=NL");
-    RsaKeyPairGenerator rsaGenerator = new RsaKeyPairGenerator();  
-    rsaGenerator.Init(new KeyGenerationParameters(new SecureRandom(), 2048));  
-    AsymmetricCipherKeyPair keyPair = rsaGenerator.GenerateKeyPair();  
-  
-    Pkcs10CertificationRequest csr = new Pkcs10CertificationRequest("SHA1WITHRSA", name, keyPair.Public, null, keyPair.Private);
-  
-    Chilkat.Rsa rsa = new Chilkat.Rsa();
-
-    bool succes = rsa.GenerateKey(1024);
-    if (succes != true) {
-        Debug.WriteLine(rsa.LastErrorText);
-        return;
-    }
-
-    string publicKeyXml = rsa.ExportPublicKey();
-    Debug.WriteLine(publicKeyXml);
-
-    string privateKeyXml = rsa.ExportPrivateKey();
-    Debug.WriteLine(privateKeyXml);
-
-    Chilkat.PrivateKey privKey = new Chilkat.PrivateKey();
-    succes = privKey.LoadXml(privateKeyXml);
-    succes = privKey.SaveRsaPemFile("privateKey.pem");
-
-    Chilkat.PublicKey pubKey = new Chilkat.PublicKey();
-    succes = pubKey.LoadXml(publicKeyXml);
-    succes = pubKey.SaveOpenSslPemFile("publicKey.pem");
-    
-    
-    using (TextWriter privateKeyTextWriter = new StringWriter())  
-    {  
-        //RSACryptoServiceProvider RSAalg = new RSACryptoServiceProvider(1);
-        PemWriter pemWriter = new PemWriter(privateKeyTextWriter);  
-        pemWriter.WriteObject(csr);  
-        pemWriter.Writer.Flush();  
-        File.WriteAllText(privateKeyFilePath, privateKeyTextWriter.ToString());  
-    }  
-  
-  
-    using (TextWriter publicKeyTextWriter = new StringWriter())  
-    {  
-        //RSACryptoServiceProvider RSAalg = new RSACryptoServiceProvider(1);
-        PemWriter pemWriter = new PemWriter(publicKeyTextWriter);  
-        pemWriter.WriteObject(csr);  
-        pemWriter.Writer.Flush();  
-  
-        File.WriteAllText(publicKeyFilePath, publicKeyTextWriter.ToString());  
-  
-
-    }
 }
-    }}
 
 
     
