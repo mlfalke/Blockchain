@@ -53,14 +53,10 @@ namespace Blockchain
             // Opzet voor tests.
             string blocktest = "";
             string hashtest = "";
+            string encryptiontest = "";
 
             Block testblock;
             testblock = new Block(DateTime.Now, newData, subject, companies, hostCompany);
-            // #####################
-
-            // Unit test blocks
-            blocktest = JsonConvert.SerializeObject(GovernmentChain.GetLatestBlock(), Formatting.Indented);
-            Console.WriteLine("Block test:" + Environment.NewLine + blocktest + Environment.NewLine);
             // #####################
 
             // Integration test adding blocks to the chain
@@ -68,17 +64,26 @@ namespace Blockchain
             GovernmentChain.AddBlock(testblock);
             Console.WriteLine("After adding block:" + Environment.NewLine + JsonConvert.SerializeObject(GovernmentChain, Formatting.Indented) + Environment.NewLine);
 
+            // Unit test blocks
+            blocktest = JsonConvert.SerializeObject(GovernmentChain.GetLatestBlock(), Formatting.Indented);
+            Console.WriteLine("Block test:" + Environment.NewLine + blocktest + Environment.NewLine);
+
             // Test op validiteit
             Console.WriteLine("Validiteit test:" + Environment.NewLine + GovernmentChain.IsValid() + Environment.NewLine);
             // #####################
 
-            // Unit test encryption
+            // Unit test hash
             hashtest = testblock.CalculateHash();
             Console.WriteLine("Hash test:" + Environment.NewLine + hashtest + Environment.NewLine);
             // #####################
 
-            // Test op validiteit
-            Console.WriteLine("Validiteit test:" + Environment.NewLine + GovernmentChain.IsValid() + Environment.NewLine);
+            // Test op encryptie en decryptie
+            encryptiontest = "Testdata";
+            Console.WriteLine("Encryptie test voor:" + Environment.NewLine + encryptiontest + Environment.NewLine);
+            encryptiontest = Encryption.Encrypt(encryptiontest);
+            Console.WriteLine("Encryptie test na:" + Environment.NewLine + encryptiontest + Environment.NewLine);
+            encryptiontest = Encryption.Decrypt(encryptiontest);
+            Console.WriteLine("Decryptie test:" + Environment.NewLine + encryptiontest + Environment.NewLine);
             // #####################
         }
     }
